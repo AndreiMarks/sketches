@@ -17,6 +17,10 @@ ExportedObj/
 *.pidb
 *.booproj
 *.svd
+*.swp
+
+# Mac
+*.DS_Store
 
 
 # Unity3D generated meta files
