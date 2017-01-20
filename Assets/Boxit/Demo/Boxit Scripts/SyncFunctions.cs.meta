@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: e1f24d66dfc309746a99a1b0b7d80f16
+labels:
+- cloud
+- dropbox
+- storage
+- backup
+- store
+- share
+- json
+- metadata
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
