@@ -2,23 +2,23 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class UIHandler : MonoBehaviour 
+public class UIHandler : ReflectionsBehaviour 
 {
     public Text idText;
     public InputField contentText;
-
-    public ReflectionManager Reflections { get { return ReflectionManager.Instance; } }
+    public EntryPanel entryPanel;
+    public GameObject settingsPanel;
 
     private ReflectionEntry _currentReflection;
 
     void Start()
     {
-        Reflections.OnReflectionAccessed += OnReflectionAccessed;
+        _Reflections.OnReflectionAccessed += OnReflectionAccessed;
     }
 
     void OnDestroy()
     {
-        Reflections.OnReflectionAccessed -= OnReflectionAccessed;
+        _Reflections.OnReflectionAccessed -= OnReflectionAccessed;
     }
 
     private void OnReflectionAccessed( ReflectionEntry reflection )
@@ -33,6 +33,26 @@ public class UIHandler : MonoBehaviour
     {
         if ( _currentReflection == null ) return;
         _currentReflection.content = contentText.text;
-        Reflections.SaveText();
+        _Reflections.SaveText();
+    }
+
+    public void OnMainLeftButtonClicked()
+    {
+        _Reflections.MoveFocusDown(); 
+    }
+
+    public void OnMainRightButtonClicked()
+    {
+        _Reflections.MoveFocusUp(); 
+    }
+
+    public void ToggleEntryPanel()
+    {
+        entryPanel.Toggle();
+    }
+
+    public void OnSettingsButtonPressed()
+    {
+        settingsPanel.SetActive( !settingsPanel.activeInHierarchy );
     }
 }

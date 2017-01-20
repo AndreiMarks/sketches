@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ReflectionCubeSpawner : MonoBehaviour 
+public class ReflectionCubeSpawner : ReflectionsBehaviour 
 {
     private const int _WEEK_DURATION_IN_DAYS = 7;
 
@@ -22,7 +22,7 @@ public class ReflectionCubeSpawner : MonoBehaviour
     {
         _currentReflectionCubes.Clear();
 
-        ReflectionEntry[] reflections = ReflectionManager.Instance.CurrentReflectionCollection.entries;
+        ReflectionEntry[] reflections = _Reflections.CurrentReflectionCollection.entries;
         
         int lifetime = 0;
         // https://www.ssa.gov/cgi-bin/longevity.cgi

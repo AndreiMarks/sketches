@@ -16,6 +16,8 @@ public class CameraMover : ReflectionsBehaviour
     private ITween<UnityEngine.Vector3> _currentTween;
 
     // Index for focus
+    public EaseType focusEaseType;
+    
     private int _currentIndex = 0;
     private int _MaxIndex
     {
@@ -23,6 +25,17 @@ public class CameraMover : ReflectionsBehaviour
         {
             return _Reflections.ReflectionCount;
         }
+    }
+
+    void OnEnable()
+    {
+        _Reflections.OnReflectionAccessed += OnReflectionAccessed;
+    }
+
+    void OnDisable()
+    {
+        if ( _Reflections == null ) return;
+        _Reflections.OnReflectionAccessed -= OnReflectionAccessed;
     }
 	
     void Start ()
@@ -32,16 +45,6 @@ public class CameraMover : ReflectionsBehaviour
 
 	void Update () 
     {
-        if ( Input.GetKeyDown( KeyCode.UpArrow ) )
-        {
-            MoveFocusUp();
-        }
-
-        if ( Input.GetKeyDown( KeyCode.DownArrow ) )
-        {
-            MoveFocusDown();
-        }
-
         //MoveCameraPosition();	
 	}
 
@@ -50,31 +53,17 @@ public class CameraMover : ReflectionsBehaviour
         //MoveCameraLook();
     }
     
-    private void MoveFocusUp()
+    private void ChangeFocusTarget( ReflectionCube cube )
     {
-        if ( _currentIndex < _MaxIndex ) _currentIndex++;
-        ChangeFocusTargetByIndex( _currentIndex );
-    }
-
-    private void MoveFocusDown()
-    {
-        if ( _currentIndex > 0 ) _currentIndex--;
-        ChangeFocusTargetByIndex( _currentIndex );
-    }
-
-    private void ChangeFocusTargetByIndex( int index )
-    {
-        Debug.Log( index );
-        ReflectionCube cube = _Reflections.GetCubeByIndex( index );
-        if ( cube == null ) return;
-
         Transform focusTarget = cube.transform;
 
-        float focusDuration = .25f;
+        float focusDuration = .15f;
         
         // Move the camera to the focus position;
         if ( _currentTween != null ) _currentTween.stop();
-        _currentTween = transform.ZKpositionTo( focusTarget.position + _initialOffset, focusDuration ).setRecycleTween( false );
+        _currentTween = transform.ZKpositionTo( focusTarget.position + _initialOffset, focusDuration )
+                                    .setRecycleTween( false )
+                                    .setEaseType( focusEaseType );
         _currentTween.start();
 
         if ( _focusCube != null ) _focusCube.TweenSmall();
@@ -114,5 +103,10 @@ public class CameraMover : ReflectionsBehaviour
         Vector3 moveVector = transform.forward * moveVectorZ + transform.up * moveVectorY + transform.right * moveVectorX;
 
         transform.localPosition += moveVector * Time.deltaTime;
+    }
+
+    void OnReflectionAccessed( ReflectionEntry reflection )
+    {
+        ChangeFocusTarget( reflection.ReflectionCube );
     }
 }

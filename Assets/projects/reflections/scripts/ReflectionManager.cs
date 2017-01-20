@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEditor;
 using System;
 using System.IO;
 using System.Collections;
@@ -7,17 +6,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Prime31.ZestKit;
 
-public class ReflectionManager : MonoBehaviour 
+public class ReflectionController : Controller<ReflectionController> 
 {
     // Events
     public event Action<ReflectionEntry> OnReflectionAccessed = (reflectionEntry) => {}; 
 
-    private const string FILE_NAME = "reflections.json";
-    private string FilePath { get { return Application.persistentDataPath + Path.DirectorySeparatorChar + FILE_NAME; } }
-
-    private static ReflectionManager _instance;
-    public static ReflectionManager Instance { get { return _instance; } }
-
+    // Reflection Collection Data
     private ReflectionCollection _reflectionCollection;
     private List<ReflectionEntry> _currentReflections = new List<ReflectionEntry>();
 
@@ -25,21 +19,31 @@ public class ReflectionManager : MonoBehaviour
     {
         get
         {
-            if ( _reflectionCollection == null ) LoadText();
+            if ( _reflectionCollection == null ) TryLoadText();
             return _reflectionCollection;
         }
     }
-
+    
     public int ReflectionCount { get { return _reflectionCollection.entries.Length; } }
 
-    // Other Components
-    public ReflectionCubeSpawner spawner;
+    // Save and Load Data
+    private FileInfo _file = new FileInfo( _FilePath );
 
-    void Awake()
+    private const string FILE_NAME = "reflections.json";
+    private static string _FilePath { get { return Application.persistentDataPath + Path.DirectorySeparatorChar + FILE_NAME; } }
+
+    // View Data
+    public ReflectionCubeSpawner spawner;
+    private int _currentIndex;
+
+    #region Unity ==================================================
+    void Update()
     {
-        _instance = this;
+        UpdateFocusInput();
     }
-     
+    #endregion
+
+    #region Save and Load Functions ==================================================
     private void Print()
     {
         Debug.Log( JsonUtility.ToJson( _reflectionCollection, prettyPrint: true ) );
@@ -56,24 +60,82 @@ public class ReflectionManager : MonoBehaviour
         OnReflectionAccessed( reflection );
     }
 
-    private void LoadText()
+    public void TryLoadText()
     {
-        string text = File.ReadAllText( FilePath );
+        string text;
+
+        if ( !File.Exists( _FilePath ) )
+        {
+            Debug.Log( "Local data doesn't exist." );
+            text = "";
+            DropboxController.Instance.DownloadFromDropbox( _file );
+        } else {
+            Debug.Log( "Local data exists." );
+            text = File.ReadAllText( _FilePath );
+        }
+
+        SetCollectionText( text );
+    }
+
+    public void SetCollectionText( string text )
+    {
         _reflectionCollection = JsonUtility.FromJson<ReflectionCollection>( text );
         Print();
     }
 
     public void SaveText()
     {
+        Debug.Log( "Saving text." );
         string text = JsonUtility.ToJson( _reflectionCollection );
-        File.WriteAllText( FilePath, text );
-        FileInfo file = new FileInfo( FilePath );
+        File.WriteAllText( _FilePath, text );
 
+        DropboxController.Instance.SyncFileWithDropbox( _file );
         //Debug.Log( JsonUtility.ToJson( _reflectionCollection, prettyPrint: true ) );
         //EditorUtility.RevealInFinder( FilePath );
     }
+    
+    public void DownloadText()
+    {
+        DropboxController.Instance.DownloadFromDropbox( _file );
+    }
 
-    #region Spawner Functions ==================================================
+    public void TrySyncText()
+    {
+        DropboxController.Instance.SyncFileWithDropbox( _file );
+    }
+    #endregion
+
+    #region View Functions ==================================================
+    private void UpdateFocusInput()
+    {
+        if ( Input.GetKeyDown( KeyCode.UpArrow ) )
+        {
+            MoveFocusUp();
+        }
+
+        if ( Input.GetKeyDown( KeyCode.DownArrow ) )
+        {
+            MoveFocusDown();
+        }
+    }
+
+    public void MoveFocusUp()
+    {
+        if ( _currentIndex < ReflectionCount - 1 ) _currentIndex++;
+        AccessReflectionAtIndex( _currentIndex );
+    }
+
+    public void MoveFocusDown()
+    {
+        if ( _currentIndex > 0 ) _currentIndex--;
+        AccessReflectionAtIndex( _currentIndex );
+    }
+
+    private void AccessReflectionAtIndex( int index )
+    {
+        OnReflectionAccessed( CurrentReflectionCollection.entries[index] );
+    }
+
     public ReflectionCube GetCubeByIndex( int index )
     {
         return spawner.GetCubeByIndex( index );

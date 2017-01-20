@@ -4,9 +4,10 @@ using System.Collections;
 using Prime31.ZestKit;
 using Random = UnityEngine.Random;
 
-public class ReflectionCube : MonoBehaviour 
+public class ReflectionCube : ReflectionsBehaviour 
 {
     // Data
+    public ReflectionEntry Reflection { get { return _reflection; } }
     private ReflectionEntry _reflection;
 
     // Animation
@@ -18,7 +19,21 @@ public class ReflectionCube : MonoBehaviour
 
     // Tween
     private ITween<Vector3> _scaleTween;
+
+    // Drift
+    private float _randomSeed = 0f;
+    private float _pingPongValue;
     
+    void Awake()
+    {
+        _randomSeed = Random.value;
+    }
+
+    void Update()
+    {
+        //Drift();
+    }
+
     void OnMouseDown()
     {
         TweenLarge();
@@ -39,7 +54,7 @@ public class ReflectionCube : MonoBehaviour
     {
         if ( _reflection == null ) return;
 
-        ReflectionManager.Instance.ReportReflectionAccessed( _reflection );
+        _Reflections.ReportReflectionAccessed( _reflection );
     }
 
     public void TweenLarge()
@@ -58,6 +73,18 @@ public class ReflectionCube : MonoBehaviour
                                 .setEaseType( tweenSmallEase )
                                 .setRecycleTween( false );
         _scaleTween.start();
+    }
+
+    private void Drift()
+    {
+        float driftWidth = 10f;
+        _pingPongValue = Mathf.PingPong( Time.time * _randomSeed * .5f, driftWidth );
+
+        float x = -driftWidth * .5f + _pingPongValue;
+        float y = transform.localPosition.y;
+        float z = transform.localPosition.z;
+
+        transform.localPosition = new Vector3( x, y, z );
     }
 }
 
