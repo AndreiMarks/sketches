@@ -13,11 +13,6 @@ public class ReflectionCubeSpawner : ReflectionsBehaviour
 
     private List<ReflectionCube> _currentReflectionCubes = new List<ReflectionCube>();
 
-    void Start()
-    {
-        SpawnCubes();
-    }
-
     private void SpawnCubes()
     {
         _currentReflectionCubes.Clear();

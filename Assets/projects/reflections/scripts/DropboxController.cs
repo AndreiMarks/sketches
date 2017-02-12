@@ -10,13 +10,6 @@ public class DropboxController : Controller<DropboxController>
 
     private FileInfo _lastFileInfo;
 
-    void Start()
-    {
-        return;
-        if ( !client.IsLinked ) TryLink();
-        else GetAccountInfo();
-    }
-
     private void GetAccountInfo()
     {
         client.GetAccountInfo( OnGetAccountInfoSuccess );    

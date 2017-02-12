@@ -4,10 +4,16 @@ using System.Collections;
 
 public class UIHandler : ReflectionsBehaviour 
 {
-    public Text idText;
-    public InputField contentText;
+    // Panels
+    public GameObject mainMenuPanelObject;
+    public GameObject navigationPanelObject;
+    public GameObject chooseItPanelObject;
+
     public EntryPanel entryPanel;
     public GameObject settingsPanel;
+
+    public Text idText;
+    public InputField contentText;
 
     private ReflectionEntry _currentReflection;
 
@@ -20,6 +26,39 @@ public class UIHandler : ReflectionsBehaviour
     {
         _Reflections.OnReflectionAccessed -= OnReflectionAccessed;
     }
+
+    public void Activate()
+    {
+        Debug.Log("Activating UIHandler.");
+        gameObject.SetActive( true );
+    }
+
+    #region Panels ==================================================
+    private void HideAllPanels()
+    {
+        mainMenuPanelObject.SetActive( false );
+        navigationPanelObject.SetActive( false );
+        chooseItPanelObject.SetActive( false );
+    }
+
+    public void ShowMainMenuPanel()
+    {
+        HideAllPanels();
+        mainMenuPanelObject.SetActive( true );
+    }
+
+    private void ShowNavigationPanel()
+    {
+        navigationPanelObject.SetActive( true );
+    }
+
+    public void ShowChooseItMenuPanel()
+    {
+        HideAllPanels();
+        ShowNavigationPanel();
+        chooseItPanelObject.SetActive( true );
+    }
+    #endregion
 
     private void OnReflectionAccessed( ReflectionEntry reflection )
     {

@@ -3,18 +3,11 @@ using System.Collections;
 
 public class ReflectionsBehaviour : MonoBehaviour 
 {
-    private static bool _preWarmed;
+    protected AppLogicReflections _AppLogic { get { return AppLogicReflections.Instance; } }
 
+    protected AudioController _Audio { get { return AudioController.Instance; } }
     protected DropboxController _Dropbox { get { return DropboxController.Instance; } }
+    protected TouchKitController _TouchKit { get { return TouchKitController.Instance; } }
     protected ReflectionController _Reflections { get { return ReflectionController.Instance; } }
-
-    void Awake()
-    {
-        if ( !_preWarmed )
-        {
-            Debug.Log( "Loading: " + _Dropbox );
-            Debug.Log( "Loading: " + _Reflections );
-            _preWarmed = true;
-        }
-    }
+    protected ReflectionsUIController _UI { get { return ReflectionsUIController.Instance; } } 
 }

@@ -27,21 +27,23 @@ public class ReflectionController : Controller<ReflectionController>
     public int ReflectionCount { get { return _reflectionCollection.entries.Length; } }
 
     // Save and Load Data
-    private FileInfo _file = new FileInfo( _FilePath );
+    private FileInfo __file;
+    private FileInfo _file
+    {
+        get
+        {
+            if ( __file == null ) __file = new FileInfo( _FilePath );
+            return __file;
+        }
+    }
 
     private const string FILE_NAME = "reflections.json";
-    private static string _FilePath { get { return Application.persistentDataPath + Path.DirectorySeparatorChar + FILE_NAME; } }
+    private string _FilePathInstance { get { return Application.persistentDataPath + Path.DirectorySeparatorChar + FILE_NAME; } }
+    private string _FilePath { get { return _FilePathInstance; } }
 
     // View Data
     public ReflectionCubeSpawner spawner;
     private int _currentIndex;
-
-    #region Unity ==================================================
-    void Update()
-    {
-        UpdateFocusInput();
-    }
-    #endregion
 
     #region Save and Load Functions ==================================================
     private void Print()
