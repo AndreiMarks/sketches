@@ -126,7 +126,6 @@ public class TKSwipeRecognizer : TKAbstractGestureRecognizer
 
     private bool checkForSwipeCompletion(TKTouch touch)
     {
-        Debug.Log( this._startTime );
         // if we have a time stipulation and we exceeded it stop listening for swipes, fail
         if (timeToSwipe > 0.0f && (Time.time - this._startTime) > timeToSwipe)
             return false;

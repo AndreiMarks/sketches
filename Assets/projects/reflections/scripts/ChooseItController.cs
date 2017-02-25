@@ -7,19 +7,18 @@ public class ChooseItController : Controller<ChooseItController>
 {
     public GameObject chooseItEnvironment;
 
-    public Transform optionTextTransform;
+    public OptionText optionText;
     public DynamicText optionTextComponent;
     public float panScale;
     public int defaultOptionCount = 2;
     private int _optionCount;
     
-    private Vector3 _initialPosition;
-    private Vector3 _lastPanPosition;
-    private float _lastUpdateTime;
     private bool _isPanning;
 
-    public AnimationCurve easeCurve;
-    public AudioClip popSound;
+    public AnimationCurve updateCurve;
+    public AnimationCurve executeCurve;
+    public AudioClip updateSound;
+    public AudioClip executeSound;
 
     private ITween<Vector3> _scaleTween;
     private float _bounceSizeScale = 2f;
@@ -29,19 +28,7 @@ public class ChooseItController : Controller<ChooseItController>
     private AudioController _Audio { get { return AudioController.Instance; } }
     private TouchKitController _TK { get { return TouchKitController.Instance; } }
 
-    private bool _OptionTextVisible { get { return optionTextTransform.GetComponent<Renderer>().isVisible; } }
-    private Vector3 _OptionTextPosition { get { return optionTextTransform.position; } set { optionTextTransform.position = value; } }
-    private Vector2 _OptionTextScreenPos { get { return Camera.main.WorldToScreenPoint( optionTextTransform.position ); } }
-    private float _BoundsOffset { get { return optionTextTransform.GetComponent<Renderer>().bounds.size.x; } }
-    private float _ScreenWidth
-    {
-        get
-        {
-            float xMax = Camera.main.ViewportToWorldPoint( new Vector2( 1f, 0f ) ).x;
-            float xMin = Camera.main.ViewportToWorldPoint( new Vector2( 0f, 0f ) ).x;
-            return xMax - xMin;
-        }
-    }
+    private Transform _OptionTextTransform { get { return optionText.transform; } }
 
     void OnEnable()
     {
@@ -68,38 +55,57 @@ public class ChooseItController : Controller<ChooseItController>
 
     public void DecrementOptionNumber()
     {
+        DecrementOptionNumber( resetPosition: true );
+    }
+
+    public void DecrementOptionNumber( bool resetPosition = true )
+    {
         _optionCount--;
 
         if ( _optionCount < 0 ) _optionCount = 0;
 
-        UpdateOptionText();
+        UpdateOptionText( resetPosition, audio: updateSound );
     }
 
     public void IncrementOptionNumber()
     {
+        IncrementOptionNumber( resetPosition: true );
+    }
+
+    public void IncrementOptionNumber( bool resetPosition = true )
+    {
         _optionCount++;
-        UpdateOptionText();
+        UpdateOptionText( resetPosition, audio: updateSound );
     }
 
     public void ExecuteChooseIt()
     {
         int currentMax = _optionCount;
         int chosenNumber = Random.Range( 1, currentMax + 1 );
-        UpdateOptionText( chosenNumber.ToString() );
+        UpdateOptionText( chosenNumber.ToString(), resetPosition: true, audio: executeSound );
     }
 
-    private void UpdateOptionText()
+    private void UpdateOptionText( bool resetPosition, AudioClip audio )
     {
         string newText = _optionCount.ToString();
-        UpdateOptionText( newText );
+        UpdateOptionText( newText, resetPosition, updateSound );
     }
 
-    public void TweenLarge()
+    private void UpdateOptionText( string newText, bool resetPosition, AudioClip audio )
     {
+        if ( resetPosition ) optionText.ResetPosition();
+        optionTextComponent.SetText( newText );
+        AnimationCurve curve = ( audio == executeSound ) ? executeCurve : updateCurve;
+        Tween( curve );
+        _Audio.PlaySFX( audio );
+    }
+
+    public void Tween( AnimationCurve curve )
+    {
+        _OptionTextTransform.localScale = Vector3.one;
         if ( _scaleTween != null ) _scaleTween.stop();
-        _scaleTween = optionTextTransform.ZKlocalScaleTo( _BounceSize, _tweenDuration )
-                                        //.setEaseType( EaseType.BackOut )
-                                        .setAnimationCurve( easeCurve )
+        _scaleTween = _OptionTextTransform.ZKlocalScaleTo( _BounceSize, _tweenDuration )
+                                        .setAnimationCurve( curve )
                                         .setRecycleTween( false )
                                         .setCompletionHandler( TweenNormal );
         _scaleTween.start();
@@ -108,17 +114,10 @@ public class ChooseItController : Controller<ChooseItController>
     public void TweenNormal( ITween<Vector3> tween )
     {
         if ( _scaleTween != null ) _scaleTween.stop();
-        _scaleTween = optionTextTransform.ZKlocalScaleTo( Vector3.one, .15f )
+        _scaleTween = _OptionTextTransform.ZKlocalScaleTo( Vector3.one, .15f )
                                 .setEaseType( EaseType.SineOut )
                                 .setRecycleTween( false );
         _scaleTween.start();
-    }
-    private void UpdateOptionText( string newText )
-    {
-        _OptionTextPosition = Vector3.zero;
-        optionTextComponent.SetText( newText );
-        TweenLarge();
-        _Audio.PlaySFX( popSound );
     }
 
     private void OnPanUpdated( TKPanRecognizer pan )
@@ -128,40 +127,18 @@ public class ChooseItController : Controller<ChooseItController>
         if ( !_isPanning )
         {
             //Debug.Log( "Setting initial position." );
-            _initialPosition = optionTextTransform.position;
+
+            optionText.SetMovePlayer();
         }
 
-        optionTextTransform.position += Vector3.right * pan.deltaTranslation.x * panScale * Time.deltaTime;
-
-        if ( !_OptionTextVisible )
-        {
-            if ( _OptionTextScreenPos.x < 0 )
-            {
-                optionTextTransform.position += Vector3.right * ( _ScreenWidth + _BoundsOffset ); 
-
-            } else if ( _OptionTextScreenPos.x > 1 ) {
-            
-                optionTextTransform.position -= Vector3.right * ( _ScreenWidth + _BoundsOffset ); 
-            }
-        }
-
-        float velocity = ( _OptionTextPosition - _lastPanPosition ).magnitude / (Time.time - _lastUpdateTime);
-        Debug.Log( velocity );
-
-        _lastUpdateTime = Time.time;
-        _lastPanPosition = _OptionTextPosition;
+        optionText.ForceUpdatePosition( pan.deltaTranslation.x * panScale );
         _isPanning = true;
     }
 
     private void OnPanEnded( TKPanRecognizer pan )
     {
-        //Debug.Log( "Pan ended: " + pan );
-        float velocity = ( _OptionTextPosition - _lastPanPosition ).magnitude / (Time.time - _lastUpdateTime);
-        Debug.Log( velocity );
-
-
-        //optionTextTransform.position = Vector3.zero;
         _isPanning = false;
+        optionText.SetMoveAuto();
     }
 
     private void OnSwipeEnded( TKSwipeRecognizer swipe )

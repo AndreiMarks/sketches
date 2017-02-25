@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 4e3ff949a15894ed085871919b0d4610
+timeCreated: 1487991201
+licenseType: Pro
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Market Fresh Inline Bold
+  fontNames:
+  - Market Fresh Inline Bold
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

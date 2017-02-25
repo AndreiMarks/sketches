@@ -12,9 +12,9 @@ public class ReflectionsMenuButtonPanel : ButtonPanel
             if ( _buttonDict == null )
             {
                 _buttonDict = new Dictionary<string, Action>() { 
-                                                        { "Timer", DoTimer },
+                                                        //{ "Timer", DoTimer },
                                                         { "ChooseIt", DoChooseIt },
-                                                        { "Reflections", DoReflections },
+                                                        //{ "Reflections", DoReflections },
                                                         };
             }
 
