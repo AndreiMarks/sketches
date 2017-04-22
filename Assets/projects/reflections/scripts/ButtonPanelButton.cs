@@ -8,12 +8,12 @@ public class ButtonPanelButton : MonoBehaviour
     public Button button;
     public Text textComp;
 
-    public void SetName( string name )
+    public virtual void SetName( string name )
     {
         textComp.text = name;
     }
     
-    public void SetClick( Action onClick )
+    public virtual void SetClick( Action onClick )
     {
         button.onClick.AddListener( () => onClick() );
     }

@@ -6,6 +6,7 @@ public class CanvasController : Controller<CanvasController>
 {
     public GameObject titleScreenObject;
     public GameObject gameScreenObject;
+    public GameObject mapScreenObject;
     
     private List<GameObject> _allScreens;
     private List<GameObject> AllScreens
@@ -14,7 +15,10 @@ public class CanvasController : Controller<CanvasController>
         {
             if ( _allScreens == null )
             {
-                _allScreens = new List<GameObject>(){ titleScreenObject, gameScreenObject };
+                _allScreens = new List<GameObject>(){   
+                                                        titleScreenObject, 
+                                                        gameScreenObject,
+                                                    };
             }
 
             return _allScreens;

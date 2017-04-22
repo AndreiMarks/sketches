@@ -13,5 +13,6 @@ public class Maximiner : MaximinerBehaviour
     {
         Debug.Log( "Starting Maximiner." );
         _Canvas.ShowTitleScreen();
+        _Map.Initialize();
     }
 }

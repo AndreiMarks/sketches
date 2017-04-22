@@ -14,17 +14,29 @@ public abstract class ButtonPanel : ReflectionsBehaviour
 
 	void Start () 
     {
-        CreateButtons();
+        CreateButtonObjects();
 	}
 
-    void CreateButtons()
+    public void CreateButtonObjects()
     {
         foreach( KeyValuePair<string, Action> kvp in _ButtonDict )
         {
-            ButtonPanelButton button = buttonHolder.InstantiateChild( buttonPrefab );
-            button.transform.ZeroOut();
-            button.SetName( kvp.Key );
-            button.SetClick( kvp.Value );
+            CreateButtonObject( kvp.Key, kvp.Value );
         }
+    }
+
+    public virtual ButtonPanelButton CreateButtonObject( string name, Action onClick )
+    {
+        ButtonPanelButton button = buttonHolder.InstantiateChild( buttonPrefab );
+        button.transform.ZeroOut();
+        button.SetName( name );
+        button.SetClick( onClick );
+
+        return button;
+    }
+
+    public void ClearButtonObjects()
+    {
+        buttonHolder.DestroyAllChildren();
     }
 }
