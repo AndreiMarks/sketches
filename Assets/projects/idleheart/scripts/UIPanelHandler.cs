@@ -9,12 +9,16 @@ public class UIPanelHandler : MonoBehaviour
 {
     public PanelInfo[] panelInfos;
 
+    private Stack<PanelInfo> _panelStack = new Stack<PanelInfo>();
+
     public void HideAllPanels()
     {
         for( int i = 0; i < panelInfos.Length; i++ )
         {
             panelInfos[i].HidePanel(); 
         }
+
+        _panelStack.Clear();
     }
 
     public void ShowPanelByName( string name )
@@ -28,12 +32,25 @@ public class UIPanelHandler : MonoBehaviour
         }
 
         pi.ShowPanel();
+        _panelStack.Push( pi );
     }
 
     public void ShowSinglePanelByName( string name )
     {
         HideAllPanels();
         ShowPanelByName( name );
+    }
+
+    public void CloseLastOpenedPanel()
+    {
+        PanelInfo pi = _panelStack.Pop();
+
+        if ( pi == null )
+        {
+            Debug.Log( "No last opened panel." );
+        } else {
+            pi.HidePanel();    
+        }
     }
 }
 

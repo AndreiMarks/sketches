@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 359b33afd80f54ba69f858e61cb39702
+timeCreated: 1487991201
+licenseType: Pro
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Market Fresh
+  fontNames:
+  - Market Fresh
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

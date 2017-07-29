@@ -18,14 +18,14 @@ public class DeathFader : IdleHeartBehaviour
 
     void OnEnable()
     {
-        ScoreController.OnDeathTimerUpdated += OnDeathTimerUpdated;
-        ScoreController.OnShowScoreScreen += OnShowScoreScreen;
+        IdleHeartEvents.OnDeathTimerUpdated += OnDeathTimerUpdated;
+        IdleHeartEvents.OnShowScoreScreen += OnShowScoreScreen;
     }
 
     void OnDisable()
     {
-        ScoreController.OnDeathTimerUpdated -= OnDeathTimerUpdated;
-        ScoreController.OnShowScoreScreen -= OnShowScoreScreen;
+        IdleHeartEvents.OnDeathTimerUpdated -= OnDeathTimerUpdated;
+        IdleHeartEvents.OnShowScoreScreen -= OnShowScoreScreen;
     }
 
     void OnDeathTimerUpdated( float ratio )

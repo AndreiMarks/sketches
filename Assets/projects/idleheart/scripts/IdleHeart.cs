@@ -8,6 +8,11 @@ public class IdleHeart : IdleHeartBehaviour
     public HeartHandler heart;
     public IdleHeartInputHandler input;
     public IdleHeartGameHandler game;
+    public ColorHandler color;
+    public ScoreHandler score;
+    public StoreHandler store;
+    public OrganHandler organs;
+    public BodyNetHandler bodyNet;
 
     void Start()
     {
@@ -62,7 +67,7 @@ public class IdleHeart : IdleHeartBehaviour
         game.EndGame();
         int score = game.GetScore();
 
-        _score.ReportShowScoreScreen( score );
+        _events.ReportShowScoreScreen( score );
 
         yield return 0;
     }
@@ -70,5 +75,10 @@ public class IdleHeart : IdleHeartBehaviour
     public void RestartGame()
     {
         StartCoroutine( ShowTitle() );
+    }
+
+    public void DebugButtonPress()
+    {
+        Debug.Log("I'm pressing button.");
     }
 }

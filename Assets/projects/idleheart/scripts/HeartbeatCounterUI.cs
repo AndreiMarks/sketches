@@ -9,12 +9,12 @@ public class HeartbeatCounterUI : MonoBehaviour
 
     void OnEnable()
     {
-        ScoreController.OnHeartbeatsUpdated += OnHeartbeatsUpdated;
+        IdleHeartEvents.OnHeartbeatsUpdated += OnHeartbeatsUpdated;
     }
 
     void OnDisable()
     {
-        ScoreController.OnHeartbeatsUpdated -= OnHeartbeatsUpdated;
+        IdleHeartEvents.OnHeartbeatsUpdated -= OnHeartbeatsUpdated;
     }
 
     private void OnHeartbeatsUpdated( int heartbeatCount )

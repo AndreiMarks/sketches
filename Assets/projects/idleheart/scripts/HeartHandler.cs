@@ -40,8 +40,8 @@ public class HeartHandler : IdleHeartBehaviour
         _heartbeats = 0;
         _lifeForce = 0;
 
-        _score.ReportHeartbeatsUpdated( _heartbeats );
-        _score.ReportLifeForceUpdated( _lifeForce );
+        _events.ReportHeartbeatsUpdated( _heartbeats );
+        _events.ReportLifeForceUpdated( _lifeForce );
 
         ResetDeathTimer();
     }
@@ -67,19 +67,19 @@ public class HeartHandler : IdleHeartBehaviour
     private void AddToLifeForce( int amountToAdd )
     {
         _lifeForce += amountToAdd;
-        _score.ReportLifeForceUpdated( _lifeForce );
+        _events.ReportLifeForceUpdated( _lifeForce );
     }
 
     private void RemoveFromLifeForce( int amountToRemove )
     {
         _lifeForce -= amountToRemove;
-        _score.ReportLifeForceUpdated( _lifeForce );
+        _events.ReportLifeForceUpdated( _lifeForce );
     }
 
     private void AddToHeartbeats( int amountToAdd )
     {
         _heartbeats += amountToAdd;
-        _score.ReportHeartbeatsUpdated( _heartbeats );
+        _events.ReportHeartbeatsUpdated( _heartbeats );
 
         ResetDeathTimer();
     }
@@ -89,7 +89,7 @@ public class HeartHandler : IdleHeartBehaviour
         _deathTimer -= Time.deltaTime;
         float deathRatio = _deathTimer / _deathTime;
         _heartMeter.UpdateMeter( deathRatio );
-        _score.ReportDeathTimerUpdated( deathRatio );
+        _events.ReportDeathTimerUpdated( deathRatio );
 
         if ( _deathTimer <= 0f )
         {
@@ -173,5 +173,6 @@ public class HeartHandler : IdleHeartBehaviour
     {
         if ( Input.GetKeyDown( KeyCode.Space ) ) _lifeForce = 3;
         if ( Input.GetKeyDown( KeyCode.A ) ) _heartbeats += Random.Range( 100, 1000000);
+        if ( Input.GetKeyDown( KeyCode.F ) ) _lifeForce += Random.Range( 100, 1000000);
     }
 }

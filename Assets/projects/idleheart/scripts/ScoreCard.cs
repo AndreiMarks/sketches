@@ -10,12 +10,12 @@ public class ScoreCard : IdleHeartBehaviour
 
     void OnEnable()
     {
-        ScoreController.OnShowScoreScreen += SetScoreCard;
+        IdleHeartEvents.OnShowScoreScreen += SetScoreCard;
     }
 
     void OnDisable()
     {
-        ScoreController.OnShowScoreScreen -= SetScoreCard;
+        IdleHeartEvents.OnShowScoreScreen -= SetScoreCard;
     }
 
     public void SetScoreCard( int heartbeats )

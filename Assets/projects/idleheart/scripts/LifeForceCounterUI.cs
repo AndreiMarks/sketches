@@ -9,12 +9,12 @@ public class LifeForceCounterUI : MonoBehaviour
 
     void OnEnable()
     {
-        ScoreController.OnLifeForceUpdated += OnLifeForceUpdated;
+        IdleHeartEvents.OnLifeForceUpdated += OnLifeForceUpdated;
     }
 
     void OnDisable()
     {
-        ScoreController.OnLifeForceUpdated -= OnLifeForceUpdated;
+        IdleHeartEvents.OnLifeForceUpdated -= OnLifeForceUpdated;
     }
 
     private void OnLifeForceUpdated( int amount )
