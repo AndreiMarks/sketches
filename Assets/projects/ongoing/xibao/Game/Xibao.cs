@@ -16,13 +16,14 @@ namespace Xibao
 		void Start()
 		{
 			Debug.Log( "Starting game." );
+			return;
 			uiHandler.Init();
 			gameHandler.SetUpGame();
 		}
 
 		void Update()
 		{
-			gameHandler.UpdateGame();
+			//gameHandler.UpdateGame();
 		}
 	}
 

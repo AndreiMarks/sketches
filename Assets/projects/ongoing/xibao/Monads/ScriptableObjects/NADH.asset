@@ -14,4 +14,4 @@ MonoBehaviour:
   name: NADH
   monadDisplayPrefab: {fileID: 114394221078256686, guid: a5055224873c64f35a55a7dc6c7180b7,
     type: 2}
-  color: {r: 0.049740493, g: 0.2672656, b: 0.33823532, a: 1}
+  color: {r: 0.12156863, g: 0.5568628, b: 0.8666667, a: 1}

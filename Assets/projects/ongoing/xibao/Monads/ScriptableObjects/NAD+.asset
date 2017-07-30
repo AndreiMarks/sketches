@@ -14,4 +14,4 @@ MonoBehaviour:
   name: NAD+
   monadDisplayPrefab: {fileID: 114044759992019434, guid: a88966e7cca6b42f5ab8d7599cf8ddf6,
     type: 2}
-  color: {r: 0.12121541, g: 0.5587788, b: 0.86764705, a: 1}
+  color: {r: 0.050980393, g: 0.26666668, b: 0.3372549, a: 1}

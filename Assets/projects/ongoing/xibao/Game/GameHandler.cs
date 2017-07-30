@@ -123,8 +123,13 @@ namespace Xibao
         {
             // Here we move everything to the precursor pool and see what's up?
             Debug.Log( "Here we move everything to the precursor pool and see what's up?" );
+            List<Monad> lastStepProducts = _currentPhaseObject.LoadCurrentStepProducts(); 
             _currentPhaseObject.AdvanceStep();
+            List<Monad> nextStepPrecursors = _currentPhaseObject.LoadCurrentStepPrecursors();
+            List<Monad> newElements = GetLeftoverProducts( lastStepProducts, nextStepPrecursors );
             
+            _StageHandler.AddMonads( newElements );
+            _StageHandler.MoveProductToPrecursor();
             SetRoundPhase( RoundPhase.Precursor );
         }
 
@@ -134,6 +139,19 @@ namespace Xibao
             _StageHandler.ReplaceMonads( productMonads );
             _StageHandler.MoveActiveToProduct();
             SetRoundPhase( RoundPhase.Product );
+        }
+        #endregion
+        
+        #region Utilities ==================================================
+
+        private List<Monad> GetLeftoverProducts( List<Monad> lastProducts, List<Monad> nextPrecursors )
+        {
+            for ( int i = 0; i < lastProducts.Count; i++ )
+            {
+                nextPrecursors.Remove( lastProducts[i] );
+            }
+
+            return nextPrecursors;
         }
         #endregion
         
