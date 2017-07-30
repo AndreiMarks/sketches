@@ -9,6 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9dbea99fe229b457b80b67b455abb952, type: 3}
-  m_Name: NADH
+  m_Name: Glucose
   m_EditorClassIdentifier: 
-  name: NADH
+  name: Glucose
+  monadDisplayPrefab: {fileID: 114142980593275484, guid: c50a8df40dbe44cc1a3c34bc46242a45,
+    type: 2}
+  color: {r: 0.57736754, g: 0.30801597, b: 0.828, a: 1}

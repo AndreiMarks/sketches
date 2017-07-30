@@ -9,6 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9dbea99fe229b457b80b67b455abb952, type: 3}
-  m_Name: NAD+
+  m_Name: NADH
   m_EditorClassIdentifier: 
-  name: NAD+
+  name: NADH
+  monadDisplayPrefab: {fileID: 114394221078256686, guid: a5055224873c64f35a55a7dc6c7180b7,
+    type: 2}
+  color: {r: 0.049740493, g: 0.2672656, b: 0.33823532, a: 1}

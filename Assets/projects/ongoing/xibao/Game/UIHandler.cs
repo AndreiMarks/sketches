@@ -7,13 +7,21 @@ namespace Xibao
 {
 	public class UIHandler : MonoBehaviour
 	{
-		public Text debugText; 
+		public Text debugText;
+		public PlayerButtons playerButtons;
 		
 		public void Init()
 		{
-			GameHandler.OnPhaseChanged += OnPhaseChanged;
+			SubscribeToEvents();
 		}
 
+		private void SubscribeToEvents()
+		{
+			GameHandler.OnPhaseChanged += OnPhaseChanged;
+
+			playerButtons.SubscribeToEvents();
+		}
+		
 		private void OnPhaseChanged( Phase phase )
 		{
 			debugText.text = phase.ToString();

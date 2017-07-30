@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Name: Glycolysis01
   m_EditorClassIdentifier: 
   name: Glycolysis-1
+  enzymes:
+  - monad: {fileID: 11400000, guid: 28dafdf338eaa4e2995548446ca5db44, type: 2}
+    quantity: 1
+    isPrimary: 0
   precursors:
   - monad: {fileID: 11400000, guid: 2d13a3776447c4add8354313d5da67dd, type: 2}
     quantity: 1
