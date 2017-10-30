@@ -354,7 +354,7 @@ MonoBehaviour:
     gradientType: 0
     gradientAngle: 0
     _opacity: 1
-  _innerRadius: 0
+  _innerRadius: -1
   _fromAngle: 0
   _toAngle: 360
   _segments: 31

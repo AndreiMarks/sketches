@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEditor;
 
 using Object = UnityEngine.Object;
 
@@ -18,12 +17,14 @@ public class OrganHandler : MonoBehaviour
         List<OrganInfo> organs = new List<OrganInfo>();
         foreach( var thing in Enum.GetValues( typeof( Organs ) ) )
         {
+            /*
             string name = thing.ToString();
             Sprite picture = AssetDatabase.LoadAssetAtPath<Sprite>( string.Format(assetPath, name) );
             Debug.Log( picture );
 
             OrganInfo newOrgan = new OrganInfo( name, picture );
             organs.Add( newOrgan );
+            */
         }
 
         this.organs = organs.ToArray();

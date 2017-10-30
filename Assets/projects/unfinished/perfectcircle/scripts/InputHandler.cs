@@ -18,13 +18,11 @@ namespace PerfectCircle
 
 		void OnTouchBegan( TouchInfo ti )
 		{
-			Debug.Log( "Touch" );
 			_CircleHandler.DrawCircleUnit( ti.GetWorldPoint( _MainCam ) );
 		}
 
 		void OnTouchEnded( TouchInfo ti )
 		{
-			Debug.Log( "Ended" );
 			_CircleHandler.StopDrawingCurrentCircle();
 		}
 	}

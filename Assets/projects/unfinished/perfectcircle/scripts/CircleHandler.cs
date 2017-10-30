@@ -22,11 +22,23 @@ namespace PerfectCircle
 		public void StopDrawingCurrentCircle()
 		{
 			StopCoroutine( _currentCircleActivity );
+			StartCoroutine( ShrinkCircle( _currentCircle ) );
 		}
 
+		private IEnumerator ShrinkCircle( CircleUnit circle )
+		{
+            float radiusAmount = 5f;
+			while ( circle.Radius > 0f )
+			{
+				circle.DecreaseRadius( radiusAmount );
+				yield return 0;
+			}
+			Destroy( circle.gameObject );
+		}
+		
 		private IEnumerator GrowCircle( CircleUnit circle )
 		{
-			float radiusAmount = 10f;
+			float radiusAmount = 8f;
 			
 			while ( true )
 			{

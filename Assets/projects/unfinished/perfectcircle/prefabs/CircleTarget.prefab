@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 4189575019316478}
   - component: {fileID: 114566425666121710}
   m_Layer: 0
-  m_Name: CircleUnit
+  m_Name: CircleTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -354,7 +354,7 @@ MonoBehaviour:
     gradientType: 0
     gradientAngle: 0
     _opacity: 1
-  _innerRadius: 0
+  _innerRadius: 0.5
   _fromAngle: 0
   _toAngle: 360
   _segments: 31
