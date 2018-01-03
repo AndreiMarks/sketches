@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,33 +10,54 @@ namespace RandomTimer
 	{
 		public Text textField;
 		private IEnumerator _countdownTimer;
-		
-		public void StartTimer( float runtime )
+
+		public void StartTimer( float runtime, Action finishedCallback )
 		{
 			Debug.Log( "Running timer with " + runtime + " seconds." );
+			
 			if ( _countdownTimer != null )
 			{
 				StopCoroutine( _countdownTimer );
 			}
 
-			_countdownTimer = RunTimer( runtime );
+			_countdownTimer = RunTimer( runtime, finishedCallback );
 
 			StartCoroutine( _countdownTimer );
 		}
 
-		private IEnumerator RunTimer( float seconds )
+		public void StopTimer()
 		{
-			float timer = 0f;
+			if ( _countdownTimer != null )
+			{
+				StopCoroutine( _countdownTimer );
+			}
+		}
+		
+		private IEnumerator RunTimer( float seconds, Action finishedCallback )
+		{
+			DateTime startTime = DateTime.UtcNow;
+			DateTime endTime = startTime + TimeSpan.FromSeconds(seconds);
 
-			while ( seconds > 0f )
+			TimeSpan timeRemaining;
+			TimeSpan zeroLimit = new TimeSpan(0, 0, 0, 1);
+			
+			while ( endTime - DateTime.UtcNow > zeroLimit )
 			{
                 yield return 0;
-				seconds -= Time.deltaTime;
-				Debug.Log( "Seconds is: " + seconds );
-				
-				string timeString = seconds.ToString
-				text
+
+				timeRemaining = endTime - DateTime.UtcNow;
+
+				string timeStringFormat = "{0:D2}:{1:D2}:{2:D2}";
+				int hours = timeRemaining.Days * 24 + timeRemaining.Hours;
+				textField.text = string.Format(timeStringFormat, 
+					hours, 
+					timeRemaining.Minutes, 
+					timeRemaining.Seconds);
 			}
+			
+            textField.text = "00:00:00";
+
+			finishedCallback();
 		}
 	}
 }

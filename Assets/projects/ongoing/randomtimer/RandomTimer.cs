@@ -14,25 +14,44 @@ namespace RandomTimer
         
         public InputField minField;
         public InputField maxField;
+
+        [SerializeField] private AudioSource _audio;
+        [SerializeField] private AudioClip _audioFinishedSFX;
         
         void Start()
         {
             Debug.Log("Hello");
+            LocalNotifier.RegisterNotifications();
         }
 
         public void StartTimer()
         {
-            Debug.Log("Starting timer.");
-            int min = ValidateMin();
-            int max = ValidateMax();
-            int randomMinutes = Random.Range( min, max );
+            LocalNotifier.ClearAlertNotifications();
             
-            timer.StartTimer( randomMinutes * 60 );
+            float min = (float)ValidateMin();
+            float max = (float)ValidateMax();
+            float randomMinutes = Random.Range(min, max);
+
+            float totalSeconds = randomMinutes * 60;
+            timer.StartTimer(totalSeconds, DoTimerFinished);
+            
+            LocalNotifier.ScheduleAlertNotification((int)totalSeconds);
         }
 
         public void ResetTimer()
         {
-            Debug.Log("Resetting timer."); 
+            timer.StopTimer();
+            LocalNotifier.ClearAlertNotifications();
+        }
+
+        private void DoTimerFinished()
+        {
+            PlayTimerFinishedSFX();    
+        }
+        
+        private void PlayTimerFinishedSFX()
+        {
+            _audio.PlayOneShot(_audioFinishedSFX);
         }
 
         private int ValidateMin()

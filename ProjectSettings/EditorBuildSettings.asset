@@ -7,5 +7,10 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 0
     path: Assets/projects/reflections/reflections.unity
+    guid: 00000000000000000000000000000000
   - enabled: 0
     path: Assets/projects/idleheart/IdleHeart.unity
+    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/projects/ongoing/randomtimer/RandomTimer.unity
+    guid: 1738b344a772f4522be88064ca3ae5d2
