@@ -2,8 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MaximinerBehaviour : AmBehaviour 
+namespace Maximiner
 {
-    protected CanvasController _Canvas { get { return CanvasController.Instance; } }
-    protected MaximinerMapController _Map { get { return MaximinerMapController.Instance; } }
+    public class MaximinerBehaviour : AmBehaviour
+    {
+        protected CanvasController _Canvas
+        {
+            get { return CanvasController.Instance; }
+        }
+
+        protected EventsController _Events
+        {
+            get { return EventsController.Instance; }
+        }
+
+        protected MaximinerMapController _Map
+        {
+            get { return MaximinerMapController.Instance; }
+        }
+
+        protected LocationHandler _Locations
+        {
+            get { return Maximiner.Instance.LocationHandler; }
+        }
+    }
 }
