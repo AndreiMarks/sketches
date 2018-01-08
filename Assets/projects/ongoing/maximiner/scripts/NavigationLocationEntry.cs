@@ -17,7 +17,7 @@ namespace Maximiner
 
 		public void OnButtonClicked()
 		{
-			_Locations.SetLocationById(_currentLocation.Id);
+			_Maximiner.MoveToLocation(_currentLocation);
 		}
 	}
 }

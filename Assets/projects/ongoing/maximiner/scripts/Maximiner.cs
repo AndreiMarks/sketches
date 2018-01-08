@@ -13,12 +13,17 @@ namespace Maximiner
             get { return _locationHandler; }
         }
         
+        [SerializeField] private ShipHandler _shipHandler;
+        public ShipHandler ShipHandler
+        {
+            get { return _shipHandler; }
+        }
+        
         private static Maximiner _instance;
         public static Maximiner Instance
         {
             get { return _instance; }
         }
-
 
         void Awake()
         {
@@ -40,7 +45,13 @@ namespace Maximiner
         private void StartGame()
         {
             Debug.Log("Starting Maximiner.");
-            _locationHandler.SetLocationById("HomeStation");
+            ShipHandler.CreateShip();
+            LocationHandler.SetLocationById("HomeStation");
+        }
+        
+        public void MoveToLocation(Location newLocation)
+        {
+			_Locations.SetLocationById(newLocation.Id);
         }
 
         private void DoOldGame()

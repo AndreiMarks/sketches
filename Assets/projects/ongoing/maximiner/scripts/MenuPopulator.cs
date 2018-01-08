@@ -19,5 +19,10 @@ namespace Maximiner
 				newItem.Initialize(obj);
 			}
 		}
+
+		public void ClearMenuItems()
+		{
+			_contentHolder.DestroyAllChildren();
+		}
 	}
 }

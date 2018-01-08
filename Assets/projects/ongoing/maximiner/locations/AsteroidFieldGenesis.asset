@@ -8,8 +8,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e744fdccb3d79450aa89ff9177b84e04, type: 3}
-  m_Name: MaximusSystem
+  m_Script: {fileID: 11500000, guid: d01a2af77798843b0a682c2301741bb7, type: 3}
+  m_Name: AsteroidFieldGenesis
   m_EditorClassIdentifier: 
-  _id: S001
-  _name: Maximus System
+  _id: AF002
+  _name: Genesis Field
+  _solarSystem: {fileID: 11400000, guid: 4f41d342ab1874043b8cb153e7dbcd00, type: 2}
+  shouldPopulateRandomly: 1

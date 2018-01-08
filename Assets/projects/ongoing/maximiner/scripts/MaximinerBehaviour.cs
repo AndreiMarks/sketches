@@ -6,6 +6,11 @@ namespace Maximiner
 {
     public class MaximinerBehaviour : AmBehaviour
     {
+        protected Maximiner _Maximiner
+        {
+            get { return Maximiner.Instance; }
+        }
+        
         protected CanvasController _Canvas
         {
             get { return CanvasController.Instance; }
@@ -23,7 +28,12 @@ namespace Maximiner
 
         protected LocationHandler _Locations
         {
-            get { return Maximiner.Instance.LocationHandler; }
+            get { return _Maximiner.LocationHandler; }
+        }
+        
+        protected ShipHandler _Ship
+        {
+            get { return _Maximiner.ShipHandler; }
         }
     }
 }

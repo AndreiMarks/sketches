@@ -13,6 +13,11 @@ namespace Maximiner
 		[SerializeField] private NavigationLocationMenu _navigationMenuContent;
 
 		private Location _currentLocation;
+
+		private bool _NavMenuActive
+		{
+			get { return _navigationMenuHolder.gameObject.activeInHierarchy; }
+		}
 		
 		void OnEnable()
 		{
@@ -26,12 +31,13 @@ namespace Maximiner
 
 		public void ToggleNavigationMenu()
 		{
-			bool shouldBeActive = !_navigationMenuHolder.gameObject.activeInHierarchy;
+			bool shouldBeActive = !_NavMenuActive;
 			_navigationMenuHolder.gameObject.SetActive(shouldBeActive);
 
 			if (shouldBeActive && _currentLocation != null)
 			{
 				List<Location> availableLocations = _Locations.GetNeighboringLocations(_currentLocation);
+				_navigationMenuContent.ClearMenuItems();
 				_navigationMenuContent.AddMenuItems(availableLocations);
 			}
 		}
@@ -40,6 +46,18 @@ namespace Maximiner
 		{
 			_currentLocation = location;
 			_locationText.text = location.Name;
+
+			if (_NavMenuActive)
+			{
+				ToggleNavigationMenu();
+			}
+			return;
+			if (_NavMenuActive && _currentLocation != null)
+			{
+				List<Location> availableLocations = _Locations.GetNeighboringLocations(_currentLocation);
+				_navigationMenuContent.ClearMenuItems();
+				_navigationMenuContent.AddMenuItems(availableLocations);
+			}
 		}
 	}
 }

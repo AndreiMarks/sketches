@@ -1,51 +1,76 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class ShipDisplay : MonoBehaviour 
+namespace Maximiner
 {
-    public PositionInfo[] displayInfos;
-
-    void Update()
+    public class ShipDisplay : MaximinerBehaviour
     {
-        if ( Input.GetKeyDown( KeyCode.UpArrow ) ) MoveDisplayToCenter();
-        if ( Input.GetKeyDown( KeyCode.DownArrow ) ) MoveDisplayToBottom();
-    }
+        public PositionInfo[] displayInfos;
+        [SerializeField] private ModuleMenu _moduleMenu;
 
-    public void MoveDisplayToCenter()
-    {
-        MoveDisplayToPosition( Position.Center );
-    }
-
-    public void MoveDisplayToBottom()
-    {
-        MoveDisplayToPosition( Position.Bottom );
-    }
-
-    private void MoveDisplayToPosition( Position position )
-    {
-        foreach( PositionInfo pi in displayInfos )
+        void OnEnable()
         {
-            switch( position )
-            {
-                case ( Position.Center ):
-                    pi.transform.anchoredPosition = pi.centerPosition;
-                break;
+            EventsController.OnShipChanged += OnShipChanged;
+        }
+        
+        void OnDisable()
+        {
+            EventsController.OnShipChanged -= OnShipChanged;
+        }
+        
+        public void MoveDisplayToCenter()
+        {
+            MoveDisplayToPosition(Position.Center);
+        }
 
-                case ( Position.Bottom ):
-                    pi.transform.anchoredPosition = pi.bottomPosition;
-                break;
+        public void MoveDisplayToBottom()
+        {
+            MoveDisplayToPosition(Position.Bottom);
+        }
+
+        private void MoveDisplayToPosition(Position position)
+        {
+            foreach (PositionInfo pi in displayInfos)
+            {
+                switch (position)
+                {
+                    case (Position.Center):
+                        pi.transform.anchoredPosition = pi.centerPosition;
+                        break;
+
+                    case (Position.Bottom):
+                        pi.transform.anchoredPosition = pi.bottomPosition;
+                        break;
+                }
             }
         }
-    }
 
-    private enum Position { Center, Bottom }
+        private void OnShipChanged(Ship ship)
+        {
+            List<Module> modules = new List<Module>();
+             
+            modules.Add(new CargoModule(ship.CargoHoldVolume));
+             
+            for (int i = 0; i < ship.MiningLaserCount; i++)
+            {
+                modules.Add(new MiningModule());
+            }
+             
+            _moduleMenu.AddMenuItems(modules);
+        }
 
-    [System.Serializable]
-    public class PositionInfo
-    {
-        public RectTransform transform;
-        public Vector2 centerPosition;
-        public Vector2 bottomPosition;
+        private enum Position
+        {
+            Center,
+            Bottom
+        }
+
+        [System.Serializable]
+        public class PositionInfo
+        {
+            public RectTransform transform;
+            public Vector2 centerPosition;
+            public Vector2 bottomPosition;
+        }
     }
 }
