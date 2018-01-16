@@ -53,7 +53,7 @@ namespace Maximiner
              
             for (int i = 0; i < ship.MiningLaserCount; i++)
             {
-                modules.Add(new MiningModule());
+                modules.Add(new MiningModule(i+1));
             }
              
             _moduleMenu.AddMenuItems(modules);

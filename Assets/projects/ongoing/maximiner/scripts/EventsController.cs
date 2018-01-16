@@ -7,6 +7,12 @@ namespace Maximiner
 {
 	public class EventsController : Controller<EventsController>
 	{
+		public static event Action<Asteroid> OnAsteroidEntryClicked = (asteroid) => { };
+		public void ReportAsteroidEntryClicked(Asteroid asteroid)
+		{
+			OnAsteroidEntryClicked(asteroid);
+		}
+		
 		public static event Action<Location> OnLocationChanged = (location) => { };
 		public void ReportLocationChanged(Location location)
 		{

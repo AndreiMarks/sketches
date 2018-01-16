@@ -26,6 +26,11 @@ namespace Maximiner
 				Class = (AsteroidClass)Random.Range(0, Enum.GetValues(typeof(AsteroidClass)).Length);
 			}
 		}
+
+		public override string ToString()
+		{
+			return "Asteroid " + _name + " " + Name;
+		}
 	}
 
 	public enum AsteroidType

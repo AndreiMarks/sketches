@@ -18,6 +18,8 @@ namespace Maximiner
 		public void OnButtonClicked()
 		{
 			//_Maximiner.MoveToLocation(_currentLocation);
+			Debug.Log(_asteroid.ToString());
+			_Events.ReportAsteroidEntryClicked(_asteroid);
 		}
 	}
 }

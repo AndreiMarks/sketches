@@ -7,9 +7,9 @@ namespace Maximiner
     {
         [SerializeField] private Text _text;
 
-        public override void Initialize(MiningModule menuItemContent)
+        public override void Initialize(MiningModule miningModule)
         {
-            _text.text = "0";
+            _text.text = miningModule.Order.ToString();
         }
     }
 }
