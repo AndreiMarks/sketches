@@ -9,6 +9,8 @@ namespace Maximiner
 		[SerializeField] private RectTransform _contentHolder;
 		[SerializeField] private T _prefab;
 
+		private List<T> _currentMenuItems = new List<T>();
+
 		public void AddMenuItems(List<U> items)
 		{
 			for (int i = 0; i < items.Count; i++)
@@ -17,12 +19,19 @@ namespace Maximiner
 				T newItem = _contentHolder.InstantiateChild(_prefab);
 				newItem.transform.ZeroOut();
 				newItem.Initialize(obj);
+				_currentMenuItems.Add(newItem);
 			}
 		}
 
 		public void ClearMenuItems()
 		{
 			_contentHolder.DestroyAllChildren();
+			_currentMenuItems.Clear();
+		}
+
+		public List<T> GetMenuItems()
+		{
+			return _currentMenuItems;
 		}
 	}
 }

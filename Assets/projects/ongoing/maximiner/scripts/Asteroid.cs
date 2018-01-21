@@ -8,6 +8,8 @@ namespace Maximiner
 {
 	public class Asteroid
 	{
+		public int Id { get; private set; }
+		
 		private string _name;
 		public string Name
 		{
@@ -21,7 +23,8 @@ namespace Maximiner
 		{
 			if (isRandom)
 			{
-				_name = GetHashCode().ToString();
+				Id = GetHashCode();
+				_name = Id.ToString();
 				Type = (AsteroidType)Random.Range(0, Enum.GetValues(typeof(AsteroidType)).Length);// as AsteroidType;
 				Class = (AsteroidClass)Random.Range(0, Enum.GetValues(typeof(AsteroidClass)).Length);
 			}

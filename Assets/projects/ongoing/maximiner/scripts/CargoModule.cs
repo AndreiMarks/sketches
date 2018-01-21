@@ -7,18 +7,25 @@ namespace Maximiner
 {
 	public class CargoModule : Module
 	{
+		public override int Id { get; protected set; }
+
 		public override ModuleType Type
 		{
 			get { return ModuleType.Cargo; }
 		}
 		
-		private int _size;
-		public int Size
+		private float _size;
+		public float Size
 		{
 			get { return _size; }
 		}
 
-		public CargoModule(int size)
+		public float AvailableVolume
+		{
+			get { return 100f; }
+		}
+
+		public CargoModule(float size)
 		{
 			_size = size;
 		}
