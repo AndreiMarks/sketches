@@ -8,6 +8,10 @@ namespace Maximiner
     public class MiningModuleEntry : MenuItem<MiningModule>
     {
         [SerializeField] private Text _text;
+	    [SerializeField] private Image _backgroundImage;
+	    
+		[SerializeField] private Color _activeColor;
+		[SerializeField] private Color _inactiveColor;
 
 	    private MiningModule _miningModule;
 	    
@@ -15,12 +19,14 @@ namespace Maximiner
 	    {
 			EventsController.OnAsteroidMiningStarted += OnAsteroidMiningStarted;
 			EventsController.OnAsteroidMiningStopped += OnAsteroidMiningStopped;
+			EventsController.OnAsteroidMiningUpdated += OnAsteroidMiningUpdated;
 	    }
 
 	    void OnDisable()
 	    {
 			EventsController.OnAsteroidMiningStarted -= OnAsteroidMiningStarted;
 			EventsController.OnAsteroidMiningStopped -= OnAsteroidMiningStopped;
+			EventsController.OnAsteroidMiningUpdated -= OnAsteroidMiningUpdated;
 	    }
 	    
         public override void Initialize(MiningModule miningModule)
@@ -29,26 +35,22 @@ namespace Maximiner
             _text.text = miningModule.Order.ToString();
         }
         
-		public void OnAsteroidMiningStarted(Asteroid asteroid, MiningModule module)
+		public void OnAsteroidMiningStarted(AsteroidMiningInfo ami)
 		{
-			if (module.Id != _miningModule.Id) return;
-			StartCoroutine("UpdateEntry");
+			if (ami.MiningModule.Id != _miningModule.Id) return;
+			_backgroundImage.color = _activeColor;
 		}
 
-		public void OnAsteroidMiningStopped(Asteroid asteroid, MiningModule module)
+		public void OnAsteroidMiningStopped(AsteroidMiningInfo ami)
 		{
-			if (module.Id != _miningModule.Id) return;
-			StopCoroutine("UpdateEntry");
+			if (ami.MiningModule.Id != _miningModule.Id) return;
+			_backgroundImage.color = _inactiveColor;
 		}
 
-	    private IEnumerator UpdateEntry()
+	    public void OnAsteroidMiningUpdated(AsteroidMiningInfo ami)
 	    {
-		    while (true)
-		    {
-			    _text.text = Random.Range(0, 10).ToString();
-			    yield return new WaitForSeconds(1f);
-		    }
+		    if (ami.MiningModule.Id != _miningModule.Id) return;
+		    _text.text = ami.CycleTimeRemaining.ToString("F0");
 	    }
-		
     }
 }

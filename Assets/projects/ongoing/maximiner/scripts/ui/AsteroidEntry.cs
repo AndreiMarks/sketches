@@ -32,7 +32,6 @@ namespace Maximiner
 
 		public void OnButtonClicked()
 		{
-			Debug.Log(_asteroid.ToString());
 			_Events.ReportAsteroidEntryClicked(_asteroid);
 		}
 	}

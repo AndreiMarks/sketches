@@ -106,6 +106,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _text: {fileID: 114069646369944826}
+  _backgroundImage: {fileID: 114564305212075448}
+  _activeColor: {r: 0.45882353, g: 0.78431374, b: 0.32156864, a: 1}
+  _inactiveColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
 --- !u!114 &114564305212075448
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -8,11 +8,13 @@ public class GameplayHandler : MaximinerBehaviour
     void OnEnable()
     {
         EventsController.OnAsteroidEntryClicked += OnAsteroidEntryClicked;
+        EventsController.OnAsteroidMiningCycleFinished += OnAsteroidMiningCycleFinished;
     }
     
     void OnDisable()
     {
         EventsController.OnAsteroidEntryClicked -= OnAsteroidEntryClicked;
+        EventsController.OnAsteroidMiningCycleFinished -= OnAsteroidMiningCycleFinished;
     }
 
     private void OnAsteroidEntryClicked(Asteroid asteroid)
@@ -41,6 +43,20 @@ public class GameplayHandler : MaximinerBehaviour
             }
             
             _Events.ReportDoWarningMessage(warning);
+        }
+    }
+
+    private void OnAsteroidMiningCycleFinished(AsteroidMiningInfo ami)
+    {
+        Debug.Log("Finished a mining cycle.");
+        OreYieldInfo yield = ami.GetCycleOreYieldInfo();
+        ami.Asteroid.RemoveOre(yield);
+
+        if (!_Ship.CurrentShip.TryAddOreToCargoModule(yield))
+        {
+            // Can't mine anymore. Finish up.
+            Debug.Log("Hello?");
+            ami.MiningModule.StopMining(ami.Asteroid);
         }
     }
 }

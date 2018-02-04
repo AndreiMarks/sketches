@@ -85,9 +85,35 @@ namespace Maximiner
 		{
 			return MiningModules.FirstOrDefault(mm => !mm.IsActivated);
 		}
+		
+		private CargoModule GetFirstAvailableCargoModule()
+		{
+			return CargoModules.FirstOrDefault(cm => cm.AvailableVolume > 0f);
+		}
 
 		#region Asteroid Mining --------------------------------------------------
 
+		public bool TryAddOreToCargoModule(OreYieldInfo oyi)
+		{
+			if (!HasAvailableCargoSpace)
+			{
+				string warning = "You do not have enough cargo space. Ore jettisoned into space.";
+				EventsController.Instance.ReportDoWarningMessage(warning);
+				
+				return false;
+			}
+
+			CargoModule cm = GetFirstAvailableCargoModule();
+			
+			OreYieldInfo remainder;
+			if (!cm.TryAddOre(oyi, out remainder))
+			{
+				return TryAddOreToCargoModule(remainder);	
+			}
+
+			return true;
+		}
+		
 		public bool IsMiningAsteroid(Asteroid asteroid)
 		{
 			return MiningModules.Any(mm => mm.Target != null && mm.Target.Id == asteroid.Id);
@@ -96,8 +122,8 @@ namespace Maximiner
 		public void StartMiningAsteroid(Asteroid asteroid)
 		{
 			MiningModule miner = GetFirstAvailableMiningModule();
-			miner.StartMining(asteroid);
-			EventsController.Instance.ReportAsteroidMiningStarted(asteroid, miner);
+			AsteroidMiningInfo newInfo = miner.StartMining(asteroid);
+			EventsController.Instance.ReportAsteroidMiningStarted(newInfo);
 		}
 
 		public void StopMiningAsteroid(Asteroid asteroid)
@@ -107,8 +133,8 @@ namespace Maximiner
 			{
 				if (mm.Target.Id == asteroid.Id)
 				{
-					mm.StopMining(asteroid);
-                    EventsController.Instance.ReportAsteroidMiningStopped(asteroid, mm);
+					AsteroidMiningInfo info = mm.StopMining(asteroid);
+                    EventsController.Instance.ReportAsteroidMiningStopped(info);
 				}
 			}
 		}

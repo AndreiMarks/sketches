@@ -39,22 +39,22 @@ namespace Maximiner
 			_asteroidFieldMenu.AddMenuItems(field.Asteroids);
 		}
 
-		public void OnAsteroidMiningStarted(Asteroid asteroid, MiningModule module)
+		public void OnAsteroidMiningStarted(AsteroidMiningInfo ami)
 		{
 			List<AsteroidEntry> asteroidEntries = _asteroidFieldMenu.GetMenuItems();
 			foreach (AsteroidEntry ae in asteroidEntries)
 			{
-				if (ae.AsteroidId == asteroid.Id)
+				if (ae.AsteroidId == ami.Asteroid.Id)
 				{
 					ae.SetMiningStatusDisplay(isBeingMined: true);
 				}
 			}
 		}
 
-		public void OnAsteroidMiningStopped(Asteroid asteroid, MiningModule module)
+		public void OnAsteroidMiningStopped(AsteroidMiningInfo ami)
 		{
 			List<AsteroidEntry> asteroidEntries = _asteroidFieldMenu.GetMenuItems()
-																	.Where(ae => ae.AsteroidId == asteroid.Id)
+																	.Where(ae => ae.AsteroidId == ami.Asteroid.Id)
 																	.ToList();
 			foreach (AsteroidEntry ae in asteroidEntries)
 			{
